@@ -9,6 +9,7 @@ mongoose.connect('mongodb+srv://matheus:Math91Surf@cluster0-ongea.mongodb.net/om
     useUnifiedTopology: true,
 })
 
+app.use(cors())
 app.use(express.json());
 app.use(routes);
 
