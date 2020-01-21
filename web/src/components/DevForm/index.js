@@ -20,10 +20,11 @@ function DevForm({onSubmit}) {
       },
       (err) => {
         console.log(err);
-      },
-      {
-        timeout: 30000,
       }
+      // },
+      // {
+      //   timeout: 100000,
+      // }
     )
   }, []);
 
