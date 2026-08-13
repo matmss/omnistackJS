@@ -13,7 +13,7 @@ function DevForm({onSubmit}) {
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const { latitutde, longitude } = position.coords;
+        const { latitude, longitude } = position.coords;
 
         setLatitude(latitude);
         setLongitude(longitude);
@@ -21,10 +21,6 @@ function DevForm({onSubmit}) {
       (err) => {
         console.log(err);
       }
-      // },
-      // {
-      //   timeout: 100000,
-      // }
     )
   }, []);
 
@@ -55,7 +51,7 @@ function DevForm({onSubmit}) {
       </div>
 
       <div className="input-group">
-        <div class="input-block">
+        <div className="input-block">
           <label htmlFor="latitude">Latitude</label>
           <input name="latitude" id="latitude" required value={latitude} onChange={e => setLatitude(e.target.value)} />
         </div>

@@ -6,10 +6,10 @@ const PointSchema = new mongoose.Schema({
         enum: ['Point'],
         required: true,
     },
-    coordinate: {
+    coordinates: {
         type: [Number],
         required: true,
-    } 
+    }
 });
 
 module.exports = PointSchema;

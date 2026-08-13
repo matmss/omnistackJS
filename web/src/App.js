@@ -23,13 +23,13 @@ const [devs, setDevs] = useState([]);
   }, []);
 
   async function handleAddDev(data) {
-    const response = await api.post('/dev', data)
+    const response = await api.post('/devs', data)
 
     setDevs([...devs, response.data]);
   }
 
   return (
-    <div id-="app">
+    <div id="app">
       <aside>
         <strong>Cadastro</strong>
         <DevForm onSubmit={handleAddDev} />

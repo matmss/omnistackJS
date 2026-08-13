@@ -6,7 +6,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import api from '../services/api';
 import { connect, disconnect, subscribeToNewDevs } from '../services/socket';
-import { setupWebsocket } from '../../../backend/src/websocket';
 
 function Main({ navigation }) {
   const [devs, setDevs] = useState([]);
@@ -38,7 +37,7 @@ function Main({ navigation }) {
 
   useEffect(() => {
     subscribeToNewDevs(dev => setDevs([...devs, dev]));
-  }, devs)
+  }, [devs])
 
   function setupWebsocket() {
     disconnect();
@@ -75,7 +74,7 @@ function Main({ navigation }) {
     <>
       <MapView onRegionChangeComplete={handleRegionChanged} initialRegion={currentRegion} style={styles.map}>
         {devs.map(dev => (
-        <Marker key={dev._id} coordinate={ {latitude: dev.location.coordinate[1], longitude: dev.location.longitude.coordinate[0] }}>
+        <Marker key={dev._id} coordinate={{ latitude: dev.location.coordinates[1], longitude: dev.location.coordinates[0] }}>
           <Image style={styles.avatar} source={{ uri:dev.avatar_url }} />
 
           <Callout onPress={() =>{

@@ -1,11 +1,11 @@
 import socketio from 'socket.io-client';
 
-const socket = socket('http://192.168.15.11:3333', {
+const socket = socketio('http://192.168.15.11:3333', {
   autoConnect: false,
 });
 
 function subscribeToNewDevs(subscribeFunction) {
-  socket.ons('new-dev', subscribeFunction);
+  socket.on('new-dev', subscribeFunction);
 }
 
 function connect(latitude, longitude, techs) {
