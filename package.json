@@ -2,7 +2,7 @@
   "name": "devradar-qa",
   "version": "1.0.0",
   "private": true,
-  "description": "Unified BDD test runner for DevRadar (omnistackJS) — orchestrates backend, web, and mobile suites and produces one merged report. Place this at the repo root, alongside backend/, web/, and mobile/.",
+  "description": "Unified BDD test runner for DevRadar (omnistackJS) — orchestrates backend, web, and mobile suites and produces one merged report. Place this whole folder at repo-root/qa, alongside repo-root/backend, repo-root/web, and repo-root/mobile.",
   "workspaces": [
     "backend-tests",
     "web-tests",

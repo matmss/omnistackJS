@@ -1,22 +1,29 @@
 # DevRadar QA — Full SDET scaffold
 
-Everything in this folder is meant to be dropped into the root of `matmss/omnistackJS`,
-alongside the existing `backend/`, `web/`, and `mobile/` folders.
+This whole folder (`qa/`) is meant to be dropped into the root of `matmss/omnistackJS` as
+a single unit, alongside the existing `backend/`, `web/`, and `mobile/` folders. One
+top-level `qa/` folder = the entire QA function (docs + all three automation suites +
+the unified runner), kept separate from your application code. The one exception is
+`.github/workflows/unified-tests.yml`, which GitHub requires to live at the repo root's
+`.github/workflows/` — it's delivered alongside `qa/` for that reason, not inside it.
 
 ```
 omnistackJS/
-├── backend/            (existing)
-├── web/                (existing)
-├── mobile/             (existing)
-├── backend-tests/       ← this scaffold
-├── web-tests/            ← this scaffold
-├── mobile-tests/          ← this scaffold
-├── docs/                   ← this scaffold (QA documentation set)
-├── reports/                 ← generated at test-run time, gitignore this
-├── package.json               ← this scaffold (root orchestrator)
-├── run-all-tests.sh
-├── merge-report.js
-└── .github/workflows/unified-tests.yml
+├── backend/                        (existing)
+├── web/                            (existing)
+├── mobile/                         (existing)
+├── .github/
+│   └── workflows/
+│       └── unified-tests.yml       ← this scaffold (must live at repo-root/.github)
+└── qa/                             ← this scaffold — everything QA-related in one place
+    ├── docs/                        QA documentation set
+    ├── backend-tests/               Cucumber.js + Supertest + mongodb-memory-server
+    ├── web-tests/                   Playwright + playwright-bdd
+    ├── mobile-tests/                Detox + jest-cucumber, + Maestro fallback flows
+    ├── reports/                     generated at test-run time, gitignored
+    ├── package.json                 root orchestrator (npm workspaces)
+    ├── run-all-tests.sh
+    └── merge-report.js
 ```
 
 ## Start here
@@ -24,11 +31,11 @@ omnistackJS/
 1. Read `docs/01-requirements.md` through `docs/06-framework-selection.md` — the QA
    documentation set (requirements, BDD scenarios, detailed test cases, process, bug
    tracker template, and the framework rationale behind everything below).
-2. `npm install` at the repo root (after merging this scaffold in) to set up the npm
+2. `cd qa && npm install` (after merging this scaffold into the repo) to set up the npm
    workspaces (`backend-tests`, `web-tests`, `mobile-tests`).
-3. `npm run test:backend` / `npm run test:web` to run each suite individually during
-   development, or `npm run test:all` (== `./run-all-tests.sh`) to run everything and
-   produce `reports/index.html`.
+3. From inside `qa/`: `npm run test:backend` / `npm run test:web` to run each suite
+   individually during development, or `npm run test:all` (== `./run-all-tests.sh`) to run
+   everything and produce `reports/index.html`.
 
 ## What was actually verified before delivery (not just written)
 

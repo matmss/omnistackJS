@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Unified DevRadar QA test runner.
-# Run from the repo root (this file expects to sit alongside backend/, web/, mobile/).
+# Lives at repo-root/qa — run it from there (npm run test:all), or from anywhere via
+# `bash qa/run-all-tests.sh` since it cd's to its own directory below. This folder expects
+# to sit next to repo-root/backend, repo-root/web, repo-root/mobile.
 #
 # Exit code is non-zero if ANY suite fails, so this is a single CI gate
 # (see docs/04-qa-process.md §1 and docs/06-framework-selection.md §5).

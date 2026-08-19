@@ -2,11 +2,10 @@
 
 **Project:** omnistackJS (DevRadar) — matmss/omnistackJS
 **Purpose:** A full-stack application that lets developers register their location and tech stack (pulled from their GitHub profile) so nearby developers can discover each other on a map, in real time.
-**Document owner:** Matheus Santos
+**Document owner:** QA (Full SDET project)
 **Last updated:** 2026-08-18
 
-This document is derived directly from the current codebase (backend Express/MongoDB API, React web client, React Native/Expo mobile client, Socket.io real-time layer)
-Requirement IDs are referenced by the Test Scenarios, Test Cases, and Bug Tracker documents.
+This document is derived directly from the current codebase (backend Express/MongoDB API, React web client, React Native/Expo mobile client, Socket.io real-time layer) rather than from a separate product spec, since none exists in the repo. Requirement IDs are referenced by the Test Scenarios, Test Cases, and Bug Tracker documents.
 
 ## 1. System overview
 

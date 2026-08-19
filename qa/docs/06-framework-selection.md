@@ -1,12 +1,7 @@
 # DevRadar — Automation Framework Selection & Unified Runner Architecture
 
 ## 1. Selection criteria
-For each layer: 
-(a) native fit with the actual stack;
-(b) first-class or well-supported Gherkin/BDD integration (project mandate);
-(c) ability to run headless in CI;
-(d) community maturity/maintenance status;
-(e) ability to feed a common report format for the unified runner.
+For each layer: (a) native fit with the actual stack, (b) first-class or well-supported Gherkin/BDD integration (project mandate), (c) ability to run headless in CI, (d) community maturity/maintenance status, (e) ability to feed a common report format for the unified runner.
 
 ## 2. Backend — Express / MongoDB / Socket.io
 
@@ -58,17 +53,21 @@ The scaffold ships both so the team isn't blocked while the Expo upgrade is sche
 Goals: one command runs everything; one merged human-readable report; CI-friendly; each layer can still run independently during development.
 
 ```
-devradar-qa/
-├── docs/                         (this documentation set)
-├── backend-tests/                (Cucumber.js + Supertest + mongodb-memory-server)
-├── web-tests/                    (playwright-bdd)
-├── mobile-tests/                 (Detox + jest-cucumber, + Maestro fallback flows)
-├── reports/                      (merged output, gitignored)
-├── package.json                  (root orchestrator, npm workspaces)
-└── run-all-tests.sh              (unified runner entrypoint used locally and in CI)
+omnistackJS/                      (repo root)
+├── backend/ web/ mobile/         (existing app code)
+├── .github/workflows/            (GitHub requires this exact path — lives at repo root, not under qa/)
+│   └── unified-tests.yml
+└── qa/                           (everything QA-related, as one unit)
+    ├── docs/                         (this documentation set)
+    ├── backend-tests/                (Cucumber.js + Supertest + mongodb-memory-server)
+    ├── web-tests/                    (playwright-bdd)
+    ├── mobile-tests/                 (Detox + jest-cucumber, + Maestro fallback flows)
+    ├── reports/                      (merged output, gitignored)
+    ├── package.json                  (root orchestrator, npm workspaces)
+    └── run-all-tests.sh              (unified runner entrypoint used locally and in CI)
 ```
 
-- **Orchestration:** root `package.json` uses npm workspaces to reference the three test packages; `npm run test:all` runs each suite's `test:ci` script (each emits Cucumber-JSON to `reports/<layer>.json`), then runs `merge-report.js` to combine all three into one `reports/index.html` via `multiple-cucumber-html-reporter`.
+- **Orchestration:** `qa/package.json` uses npm workspaces to reference the three test packages; `npm run test:all` (run from inside `qa/`) runs each suite's `test:ci` script (each emits Cucumber-JSON to `reports/<layer>.json`), then runs `merge-report.js` to combine all three into one `reports/index.html` via `multiple-cucumber-html-reporter`.
 - **Selective runs:** `npm run test:backend`, `test:web`, `test:mobile` for layer-specific development loops; tag filters (`--tags "@smoke"`) supported per the tagging convention in `04-qa-process.md`.
 - **CI:** a GitHub Actions workflow (`unified-tests.yml`, included in the scaffold) runs backend+web on every PR (fast, no device farm needed), and mobile on a separate nightly/manual-dispatch job (needs a simulator runner).
 - **Exit code:** the orchestrator exits non-zero if any layer fails, so it's a single CI gate.
