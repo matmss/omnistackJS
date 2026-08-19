@@ -1,5 +1,8 @@
 const { Before, After, BeforeAll, AfterAll } = require('@cucumber/cucumber');
-const mongoose = require('mongoose');
+// Must be the SAME mongoose instance backend/src/models/Dev.js uses (backend/node_modules/mongoose),
+// not this package's own copy — mongoose's connection is a module-level singleton, so connecting a
+// different copy here leaves the app's models pointed at an unconnected instance and every query hangs.
+const mongoose = require('../../../../backend/node_modules/mongoose');
 const nock = require('nock');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const { createTestApp } = require('./testApp');
