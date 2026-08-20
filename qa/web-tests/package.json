@@ -1,0 +1,18 @@
+{
+  "name": "devradar-web-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BDD (Playwright + playwright-bdd) functional tests for the DevRadar web client.",
+  "scripts": {
+    "pretest": "bddgen",
+    "test": "playwright test",
+    "test:smoke": "bddgen && playwright test --grep @smoke",
+    "test:regression": "bddgen && playwright test --grep @regression",
+    "test:ci": "bddgen && playwright test --reporter=html,json",
+    "test:headed": "bddgen && playwright test --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "playwright-bdd": "^9.2.0"
+  }
+}
