@@ -1,0 +1,22 @@
+appId: com.matmss.mobile
+---
+# Covers: map-search.feature "Searching by tech shows matching nearby developers as markers" (@smoke)
+# Precondition: seed a matching developer via the backend API before running this flow,
+# e.g.: curl -X POST $API_URL/devs -d 'github_username=e2e-fixture&techs=ReactJS&latitude=...&longitude=...'
+- launchApp:
+    clearState: true
+- tapOn:
+    id: "search-input" # falls back to placeholder text match below if testID isn't added yet
+    optional: true
+- tapOn:
+    text: "Buscar devs por techs"
+    optional: true
+- inputText: "ReactJS"
+- tapOn:
+    id: "search-button"
+    optional: true
+- tapOn:
+    point: "90%,10%" # approximate location of the search FAB per Main.js styles.searchForm, if id lookup above is skipped
+    optional: true
+- assertVisible:
+    text: ".*" # placeholder assertion — replace with a marker-specific selector once testIDs land

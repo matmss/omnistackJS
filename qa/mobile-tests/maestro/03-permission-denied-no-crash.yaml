@@ -1,0 +1,12 @@
+appId: com.matmss.mobile
+---
+# Covers: map-search.feature "Location permission denied" (@edge)
+- launchApp:
+    clearState: true
+- runFlow:
+    when:
+      visible: "Don't allow"
+    commands:
+      - tapOn: "Don't allow"
+- assertVisible: "DevRadar"
+- assertNotVisible: "has stopped" # generic Android crash-dialog text; adjust per OS under test

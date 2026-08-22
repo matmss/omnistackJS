@@ -1,0 +1,13 @@
+appId: com.matmss.mobile
+---
+# Covers: map-search.feature "App centers the map on the current device location" (@smoke)
+- launchApp:
+    clearState: true
+- assertVisible: "DevRadar" # header title from mobile/src/routes.js navigationOptions
+# Maestro grants location permission automatically on the first location-dependent action
+# in most configs; if a permission dialog appears, this line handles it explicitly.
+- runFlow:
+    when:
+      visible: "While using the app"
+    commands:
+      - tapOn: "While using the app"
