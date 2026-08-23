@@ -1,0 +1,350 @@
+{
+  "config": {
+    "argv": [
+      "/Users/matheussantos/.nvm/versions/node/v26.7.0/bin/node",
+      "/Users/matheussantos/Projects/omnistackJS/qa/web-tests/node_modules/.bin/playwright",
+      "test"
+    ],
+    "configFile": "/Users/matheussantos/Projects/omnistackJS/qa/web-tests/playwright.config.js",
+    "rootDir": "/Users/matheussantos/Projects/omnistackJS/qa/web-tests/.features-gen",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/matheussantos/Projects/omnistackJS/qa/web-tests/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/matheussantos/Projects/omnistackJS/qa/web-tests/.features-gen",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "../reports/web-html"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../reports/web.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 4,
+    "webServer": {
+      "command": "npm start",
+      "cwd": "../../web",
+      "url": "http://localhost:3000",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "features/registration.feature.spec.js",
+      "file": "features/registration.feature.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Register a developer from the web app",
+          "file": "features/registration.feature.spec.js",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Browser geolocation pre-fills the coordinates",
+              "ok": true,
+              "tags": [
+                "smoke",
+                "P2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 944,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Given the browser grants geolocation permission at latitude \"-23.5505\" and longitude \"-46.6333\"",
+                          "duration": 12
+                        },
+                        {
+                          "title": "And the backend has no registered developers",
+                          "duration": 7
+                        },
+                        {
+                          "title": "When I open the DevRadar web app",
+                          "duration": 550
+                        },
+                        {
+                          "title": "Then the latitude field should contain \"-23.5505\"",
+                          "duration": 45
+                        },
+                        {
+                          "title": "And the longitude field should contain \"-46.6333\"",
+                          "duration": 6
+                        }
+                      ],
+                      "startTime": "2026-08-20T19:11:29.337Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f603adde0680f669cc31-529197cd21260612fe99",
+              "file": "features/registration.feature.spec.js",
+              "line": 6,
+              "column": 7
+            },
+            {
+              "title": "Submitting the form adds the developer to the visible list without a page reload",
+              "ok": true,
+              "tags": [
+                "smoke",
+                "P1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 906,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Given the browser grants geolocation permission at latitude \"-23.5505\" and longitude \"-46.6333\"",
+                          "duration": 4
+                        },
+                        {
+                          "title": "And the backend has no registered developers",
+                          "duration": 3
+                        },
+                        {
+                          "title": "And the backend will accept a new registration for \"gaearon\"",
+                          "duration": 0
+                        },
+                        {
+                          "title": "When I open the DevRadar web app",
+                          "duration": 473
+                        },
+                        {
+                          "title": "And I fill in github username \"gaearon\", techs \"ReactJS,Redux\" and submit",
+                          "duration": 229
+                        },
+                        {
+                          "title": "Then a new entry for \"gaearon\" should appear in the developer list",
+                          "duration": 70
+                        },
+                        {
+                          "title": "And the github username field should be empty",
+                          "duration": 8
+                        },
+                        {
+                          "title": "And the techs field should be empty",
+                          "duration": 10
+                        }
+                      ],
+                      "startTime": "2026-08-20T19:11:30.930Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f603adde0680f669cc31-0574940a0b100466982c",
+              "file": "features/registration.feature.spec.js",
+              "line": 14,
+              "column": 7
+            },
+            {
+              "title": "Geolocation permission denied still allows manual entry",
+              "ok": true,
+              "tags": [
+                "edge",
+                "P2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 791,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Given the browser denies geolocation permission",
+                          "duration": 2
+                        },
+                        {
+                          "title": "And the backend has no registered developers",
+                          "duration": 2
+                        },
+                        {
+                          "title": "And the backend will accept a new registration for \"gaearon\"",
+                          "duration": 0
+                        },
+                        {
+                          "title": "When I open the DevRadar web app",
+                          "duration": 440
+                        },
+                        {
+                          "title": "And I manually fill in latitude \"-23.5505\" and longitude \"-46.6333\"",
+                          "duration": 50
+                        },
+                        {
+                          "title": "And I fill in github username \"gaearon\", techs \"ReactJS\" and submit",
+                          "duration": 112
+                        },
+                        {
+                          "title": "Then a new entry for \"gaearon\" should appear in the developer list",
+                          "duration": 74
+                        }
+                      ],
+                      "startTime": "2026-08-20T19:11:31.854Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f603adde0680f669cc31-ba1064620a71b037b93f",
+              "file": "features/registration.feature.spec.js",
+              "line": 25,
+              "column": 7
+            },
+            {
+              "title": "Developer list loads existing developers on page load",
+              "ok": true,
+              "tags": [
+                "regression",
+                "P2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 576,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Given the backend has 2 registered developers",
+                          "duration": 3
+                        },
+                        {
+                          "title": "When I open the DevRadar web app",
+                          "duration": 420
+                        },
+                        {
+                          "title": "Then the developer list should show 2 entries",
+                          "duration": 50
+                        }
+                      ],
+                      "startTime": "2026-08-20T19:11:32.663Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f603adde0680f669cc31-cfdca8976235d57e8782",
+              "file": "features/registration.feature.spec.js",
+              "line": 35,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-08-20T19:11:21.491Z",
+    "duration": 11877.047,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
