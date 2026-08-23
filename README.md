@@ -56,6 +56,11 @@ suites against the real source — not written blind. Specifically:
   real bugs found during this run: a step-signature mismatch with `playwright-bdd`'s
   fixture API, and a `playwright-bdd` version that was incompatible with a newer
   `@playwright/test` release.
+- **Web ↔ real backend integration:** `web-tests/features/integration/registration.feature`
+  (`npm run test:integration` from `web-tests/`) runs the same user flows against a real
+  Express server + real (ephemeral) MongoDB — no `page.route` mocks. Only GitHub's
+  third-party API is stubbed. Both scenarios pass (2/2). See
+  `web-tests/features/support/backend-server.js`.
 - **Mobile:** could not be executed in this sandbox (no Android/iOS simulator available
   here). The `.feature`/step files are syntax-checked (`node --check`) and structurally
   correct against `mobile/src/pages/Main.js` and `Profile.js`'s actual behavior, but they

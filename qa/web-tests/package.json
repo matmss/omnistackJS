@@ -9,10 +9,19 @@
     "test:smoke": "bddgen && playwright test --grep @smoke",
     "test:regression": "bddgen && playwright test --grep @regression",
     "test:ci": "bddgen && playwright test --reporter=html,json",
-    "test:headed": "bddgen && playwright test --headed"
+    "test:headed": "bddgen && playwright test --headed",
+    "test:integration": "bddgen -c playwright.integration.config.js && playwright test -c playwright.integration.config.js",
+    "test:integration:headed": "bddgen -c playwright.integration.config.js && playwright test -c playwright.integration.config.js --headed"
   },
   "devDependencies": {
     "@playwright/test": "^1.48.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mongodb-memory-server": "^10.1.2",
+    "nock": "^13.5.5",
     "playwright-bdd": "^9.2.0"
+  },
+  "allowScripts": {
+    "mongodb-memory-server@10.4.3": true
   }
 }
