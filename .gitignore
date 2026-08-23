@@ -1,3 +1,5 @@
 **/node_modules
 .env
 **/.env
+qa/reports/
+**/package-lock.json

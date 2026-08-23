@@ -1,0 +1,29 @@
+{
+  "name": "devradar-backend-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BDD (Cucumber.js) functional & integration tests for the DevRadar backend (Express/MongoDB/Socket.io).",
+  "scripts": {
+    "test": "cucumber-js",
+    "test:smoke": "cucumber-js --tags '@smoke'",
+    "test:regression": "cucumber-js --tags '@regression'",
+    "test:ci": "cucumber-js --format json:../reports/backend.json --format progress",
+    "unit": "jest --config jest.config.js"
+  },
+  "dependencies": {
+    "axios": "^1.19.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mongoose": "^9.9.2",
+    "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^11.1.0",
+    "chai": "^4.4.1",
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^10.1.2",
+    "nock": "^13.5.5",
+    "socket.io-client": "^4.8.3",
+    "supertest": "^7.0.0"
+  }
+}

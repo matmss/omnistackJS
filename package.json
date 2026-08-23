@@ -1,0 +1,27 @@
+{
+  "name": "devradar-qa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Unified BDD test runner for DevRadar (omnistackJS) — orchestrates backend, web, and mobile suites and produces one merged report. Place this whole folder at repo-root/qa, alongside repo-root/backend, repo-root/web, and repo-root/mobile.",
+  "workspaces": [
+    "backend-tests",
+    "web-tests",
+    "mobile-tests"
+  ],
+  "scripts": {
+    "pretest:all": "rimraf reports && mkdir -p reports",
+    "test:all": "bash run-all-tests.sh",
+    "test:backend": "npm run test:ci --workspace=backend-tests",
+    "test:web": "npm run test:ci --workspace=web-tests",
+    "test:mobile": "echo 'Mobile E2E requires a simulator/emulator or Maestro CLI — run manually or via the nightly CI job, see docs/06-framework-selection.md §5' && npm run maestro --workspace=mobile-tests",
+    "test:backend:smoke": "npm run test:smoke --workspace=backend-tests",
+    "test:web:smoke": "npm run test:smoke --workspace=web-tests",
+    "test:smoke": "npm run test:backend:smoke && npm run test:web:smoke",
+    "test:regression": "npm run test:regression --workspace=backend-tests && npm run test:regression --workspace=web-tests",
+    "report:merge": "node merge-report.js",
+    "run-all": "bash run-all-tests.sh"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.5"
+  }
+}
