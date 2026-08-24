@@ -1,16 +1,10 @@
 const { createBdd } = require('playwright-bdd');
 const { expect } = require('@playwright/test');
-const { buildDev } = require('../support/fixtures');
+const { INTEGRATION_BACKEND_PORT } = require('../support/global-setup');
 
 const { Given, When, Then } = createBdd();
 
-// In-memory list the mocked GET /devs and POST /devs handlers read/write per test,
-// so "submitting the form" is reflected in the next list fetch just like the real API.
-// Stashed on $testInfo (a playwright-bdd fixture) so it's isolated per test worker/run.
-function attachDevStore($testInfo) {
-  $testInfo.devStore = $testInfo.devStore || [];
-  return $testInfo.devStore;
-}
+const BACKEND_URL = `http://localhost:${INTEGRATION_BACKEND_PORT}`;
 
 Given('the browser grants geolocation permission at latitude {string} and longitude {string}', async function ({ context }, lat, lon) {
   await context.grantPermissions(['geolocation']);
@@ -23,50 +17,24 @@ Given('the browser denies geolocation permission', async function ({ context }) 
   await context.clearPermissions();
 });
 
-Given('the backend has no registered developers', async function ({ page, $testInfo }) {
-  const store = attachDevStore($testInfo);
-  store.length = 0;
-  await mockDevsEndpoints(page, store);
+// Talks to the real backend's test-only reset/seed routes (see
+// features/support/backend-server.js) rather than mocking anything at the browser level —
+// the app under test makes real HTTP calls to a real (ephemeral) MongoDB-backed server.
+
+Given('the backend has no registered developers', async function () {
+  const res = await fetch(`${BACKEND_URL}/__test__/reset`, { method: 'POST' });
+  if (!res.ok) throw new Error(`Failed to reset the backend's data: ${res.status}`);
 });
 
-Given('the backend has {int} registered developers', async function ({ page, $testInfo }, count) {
-  const store = attachDevStore($testInfo);
-  store.length = 0;
-  for (let i = 0; i < count; i++) store.push(buildDev());
-  await mockDevsEndpoints(page, store);
-});
-
-Given('the backend will accept a new registration for {string}', async function ({ page, $testInfo }, _username) {
-  // The generic POST /devs mock in mockDevsEndpoints() accepts any username, so this step
-  // exists mainly for scenario readability and to guarantee ordering relative to other
-  // Given steps; _username documents intent without constraining the mock further.
-  const store = attachDevStore($testInfo);
-  if (!page.__devsMocked) await mockDevsEndpoints(page, store);
-});
-
-async function mockDevsEndpoints(page, store) {
-  if (page.__devsMocked) return;
-  page.__devsMocked = true;
-
-  await page.route('**/devs', async (route) => {
-    const request = route.request();
-    if (request.method() === 'GET') {
-      return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(store) });
-    }
-    if (request.method() === 'POST') {
-      const body = request.postDataJSON();
-      const dev = buildDev({
-        github_username: body.github_username,
-        techs: String(body.techs)
-          .split(',')
-          .map((t) => t.trim()),
-      });
-      store.push(dev);
-      return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(dev) });
-    }
-    return route.continue();
+Given('the backend has {int} registered developers', async function ({}, count) {
+  await fetch(`${BACKEND_URL}/__test__/reset`, { method: 'POST' });
+  const res = await fetch(`${BACKEND_URL}/__test__/seed`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ count }),
   });
-}
+  if (!res.ok) throw new Error(`Failed to seed the backend's data: ${res.status}`);
+});
 
 When('I open the DevRadar web app', async function ({ page }) {
   await page.goto('/');
@@ -105,4 +73,9 @@ Then('the techs field should be empty', async function ({ page }) {
 
 Then('the developer list should show {int} entries', async function ({ page }, count) {
   await expect(page.locator('.dev-item')).toHaveCount(count);
+});
+
+Then('reloading the page should still show {string} in the developer list', async function ({ page }, username) {
+  await page.reload();
+  await expect(page.locator('.dev-item', { hasText: username })).toBeVisible();
 });

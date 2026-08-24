@@ -9,9 +9,7 @@
     "test:smoke": "bddgen && playwright test --grep @smoke",
     "test:regression": "bddgen && playwright test --grep @regression",
     "test:ci": "bddgen && playwright test --reporter=html,json",
-    "test:headed": "bddgen && playwright test --headed",
-    "test:integration": "bddgen -c playwright.integration.config.js && playwright test -c playwright.integration.config.js",
-    "test:integration:headed": "bddgen -c playwright.integration.config.js && playwright test -c playwright.integration.config.js --headed"
+    "test:headed": "bddgen && playwright test --headed"
   },
   "devDependencies": {
     "@playwright/test": "^1.48.0",
