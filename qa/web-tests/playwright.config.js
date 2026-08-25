@@ -1,5 +1,6 @@
 const { defineConfig, devices } = require('@playwright/test');
 const { defineBddConfig } = require('playwright-bdd');
+const { INTEGRATION_BACKEND_PORT } = require('./features/support/global-setup');
 
 const testDir = defineBddConfig({
   features: 'features/*.feature',
@@ -10,8 +11,16 @@ const testDir = defineBddConfig({
 // repo-root (qa/ then web-tests/), alongside repo-root/web (Create React App).
 // The dev server is started automatically for local/CI runs; set
 // WEB_BASE_URL to point at an already-running instance instead (e.g. staging).
+//
+// Runs against a REAL backend (real Express routes, real MongoDB via
+// mongodb-memory-server; only GitHub's third-party API is stubbed) rather than
+// Playwright `page.route` mocks — see features/support/backend-server.js and
+// features/support/global-setup.js, which boots it before the web server/browser start.
+const backendUrl = `http://localhost:${INTEGRATION_BACKEND_PORT}`;
+
 module.exports = defineConfig({
   testDir,
+  globalSetup: require.resolve('./features/support/global-setup'),
   reporter: [
     ['html', { outputFolder: '../reports/web-html' }],
     ['json', { outputFile: '../reports/web.json' }],
@@ -28,6 +37,10 @@ module.exports = defineConfig({
         url: 'http://localhost:3000',
         reuseExistingServer: !process.env.CI,
         timeout: 120000,
+        env: {
+          BROWSER: 'none',
+          REACT_APP_API_URL: backendUrl,
+        },
       },
   projects: [
     {

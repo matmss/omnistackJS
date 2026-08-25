@@ -50,17 +50,15 @@ suites against the real source — not written blind. Specifically:
   policy) — expect it to work normally in your own environment; if `mongodb-memory-server`
   can't download in your CI either, point `MONGO_URI` at a real disposable MongoDB service
   container instead (see comment in `backend-tests/features/support/hooks.js`).
-- **Web:** all 4 scenarios in `web-tests/features/registration.feature` were generated
-  via `bddgen` and **run to completion (4/4 passing)** against the real React app with
-  Playwright, using route-mocked API responses and mocked browser geolocation. Fixed two
-  real bugs found during this run: a step-signature mismatch with `playwright-bdd`'s
-  fixture API, and a `playwright-bdd` version that was incompatible with a newer
-  `@playwright/test` release.
-- **Web ↔ real backend integration:** `web-tests/features/integration/registration.feature`
-  (`npm run test:integration` from `web-tests/`) runs the same user flows against a real
-  Express server + real (ephemeral) MongoDB — no `page.route` mocks. Only GitHub's
-  third-party API is stubbed. Both scenarios pass (2/2). See
-  `web-tests/features/support/backend-server.js`.
+- **Web:** all 5 scenarios in `web-tests/features/registration.feature` were generated
+  via `bddgen` and **run to completion (5/5 passing)** against the real React app with
+  Playwright. This runs against a real Express server + real (ephemeral) MongoDB — no
+  `page.route` mocks; only GitHub's third-party API is stubbed. Browser geolocation is
+  still mocked via Playwright's `context.setGeolocation` (that's a browser API, not the
+  backend). See `web-tests/features/support/backend-server.js`. Earlier iterations of this
+  suite used `page.route`-mocked API responses; fixed two real bugs found while building
+  the original version: a step-signature mismatch with `playwright-bdd`'s fixture API, and
+  a `playwright-bdd` version that was incompatible with a newer `@playwright/test` release.
 - **Mobile:** could not be executed in this sandbox (no Android/iOS simulator available
   here). The `.feature`/step files are syntax-checked (`node --check`) and structurally
   correct against `mobile/src/pages/Main.js` and `Profile.js`'s actual behavior, but they
@@ -69,7 +67,7 @@ suites against the real source — not written blind. Specifically:
   app changes). The three Maestro YAML flows are syntax-validated.
 - **Unified runner:** `merge-report.js` was run against real Cucumber-JSON and real
   Playwright-JSON output from the above runs and correctly summarized both (11/11 backend
-  scenarios, 4/4 web scenarios) into `reports/index.html`.
+  scenarios, 5/5 web scenarios) into `reports/index.html`.
 
 ## Known gaps this audit surfaced (see docs/05-bug-tracker.md for full list)
 
