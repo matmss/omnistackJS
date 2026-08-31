@@ -3,11 +3,30 @@ appId: com.matmss.mobile
 # Covers: map-search.feature "App centers the map on the current device location" (@smoke)
 - launchApp:
     clearState: true
-- assertVisible: "DevRadar" # header title from mobile/src/routes.js navigationOptions
-# Maestro grants location permission automatically on the first location-dependent action
-# in most configs; if a permission dialog appears, this line handles it explicitly.
+# On this host, boot-time resource contention occasionally trips Android's own ANR
+# dialog ("<process> isn't responding") on top of the app (BUG-009, infra timing, not
+# an app defect) - "Wait" lets the system recover instead of failing the run outright.
 - runFlow:
     when:
-      visible: "While using the app"
+      visible: "Wait"
     commands:
-      - tapOn: "While using the app"
+      - tapOn: "Wait"
+# The location permission dialog is a separate system window: while it's up, the app's
+# own window (including the "DevRadar" title) is absent from the queried accessibility
+# tree entirely, even though it's visibly rendered underneath. So this must be waited
+# for and dismissed *before* asserting DevRadar, not after - a `when: visible:` check
+# here would race the dialog's appearance and can skip the tap if it fires too early.
+- extendedWaitUntil:
+    visible: "While using the app"
+    timeout: 15000
+- tapOn: "While using the app"
+- runFlow:
+    when:
+      visible: "Wait"
+    commands:
+      - tapOn: "Wait"
+# clearState forces a fresh cold Metro bundle every run (BUG-009); extendedWaitUntil
+# tolerates that instead of asserting before the bundle finishes loading.
+- extendedWaitUntil:
+    visible: "DevRadar" # header title from mobile/src/routes.js navigationOptions
+    timeout: 20000

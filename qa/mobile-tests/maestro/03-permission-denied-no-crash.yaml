@@ -3,10 +3,28 @@ appId: com.matmss.mobile
 # Covers: map-search.feature "Location permission denied" (@edge)
 - launchApp:
     clearState: true
+# On this host, boot-time resource contention occasionally trips Android's own ANR
+# dialog ("<process> isn't responding") on top of the app (BUG-009, infra timing, not
+# an app defect) - "Wait" lets the system recover instead of failing the run outright.
 - runFlow:
     when:
-      visible: "Don't allow"
+      visible: "Wait"
     commands:
-      - tapOn: "Don't allow"
-- assertVisible: "DevRadar"
+      - tapOn: "Wait"
+# A `when: visible:` check here races the dialog's appearance and can skip the tap if
+# it fires too early - wait for it explicitly instead (see 01-launch-and-map.yaml).
+- extendedWaitUntil:
+    visible: "Don’t allow"
+    timeout: 15000
+- tapOn: "Don’t allow"
+- runFlow:
+    when:
+      visible: "Wait"
+    commands:
+      - tapOn: "Wait"
+# clearState forces a fresh cold Metro bundle every run (BUG-009); extendedWaitUntil
+# tolerates that instead of asserting before the bundle finishes loading.
+- extendedWaitUntil:
+    visible: "DevRadar"
+    timeout: 20000
 - assertNotVisible: "has stopped" # generic Android crash-dialog text; adjust per OS under test

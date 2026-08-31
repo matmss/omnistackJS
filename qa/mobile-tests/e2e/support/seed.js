@@ -12,7 +12,20 @@ const axios = require('axios');
 
 const API_URL = process.env.MOBILE_TEST_API_URL || 'http://localhost:3333';
 
-async function registerDeveloperViaApi({ techs, nearbyOf, githubUsername = `e2e-fixture-${Date.now()}` }) {
+// The backend validates github_username against the real GitHub API (no mocking here -
+// see the file header), so a synthetic name like "e2e-fixture-<ts>" 404s. GitHub's API
+// is case-insensitive (login always normalizes back to "octocat"), but Mongo's
+// `Dev.findOne({ github_username })` in DevController.store matches the raw string
+// exactly - so a random case variant of a real, stable account resolves successfully
+// on GitHub while still reading as a fresh, distinct fixture on every call.
+function randomCaseVariant(username) {
+  return username
+    .split('')
+    .map((c) => (Math.random() < 0.5 ? c.toUpperCase() : c.toLowerCase()))
+    .join('');
+}
+
+async function registerDeveloperViaApi({ techs, nearbyOf, githubUsername = randomCaseVariant('octocat') }) {
   const [longitude, latitude] = nearbyOf;
   return axios.post(`${API_URL}/devs`, {
     github_username: githubUsername,

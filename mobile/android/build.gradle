@@ -15,6 +15,10 @@ buildscript {
 allprojects {
   repositories {
     google()
+    // Detox's real Android artifact ships as a pre-built local maven repo inside its
+    // own npm package - it must come before mavenCentral(), which otherwise resolves
+    // "com.wix:detox" to an unrelated, unmaintained package of the same name.
+    maven { url "$rootDir/../node_modules/detox/Detox-android" }
     mavenCentral()
     maven { url 'https://www.jitpack.io' }
   }
