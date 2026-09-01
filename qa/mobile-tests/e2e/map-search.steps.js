@@ -4,9 +4,30 @@ const { device, element, by, waitFor } = require('detox');
 
 const feature = loadFeature(path.join(__dirname, 'map-search.feature'));
 
+// beforeEach's launchApp has been timing out on the instrumentation WebSocket handshake
+// under resource contention (Gradle daemon + Metro + MongoDB + backend + emulator all
+// running at once starves the AVD of RAM) even though the same build launches fine
+// manually (BUG-009). Retrying once absorbs that transient infra timing instead of
+// failing every scenario for a non-app-defect reason.
+async function launchAppWithRetry(launchOpts, attempts = 2) {
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      await device.launchApp(launchOpts);
+      return;
+    } catch (err) {
+      if (attempt === attempts) throw err;
+      await device.terminateApp().catch(() => {});
+    }
+  }
+}
+
 defineFeature(feature, (test) => {
+  // Default to a pre-granted permission: most scenarios interact with search-input
+  // immediately and don't handle the location-permission dialog themselves. Only the
+  // "permission is granted"/"permission is denied" scenarios need a different state,
+  // and they already relaunch explicitly with 'always'/'never' in their own given step.
   beforeEach(async () => {
-    await device.launchApp({ newInstance: true, permissions: { location: 'unset' } });
+    await launchAppWithRetry({ newInstance: true, permissions: { location: 'always' } });
   });
 
   test('App centers the map on the current device location', ({ given, when, then }) => {
