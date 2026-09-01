@@ -53,7 +53,7 @@ The scaffold ships both so the team isn't blocked while the Expo upgrade is sche
 Goals: one command runs everything; one merged human-readable report; CI-friendly; each layer can still run independently during development.
 
 ```
-omnistackJS/                      (repo root)
+DevRadar/                      (repo root)
 ├── backend/ web/ mobile/         (existing app code)
 ├── .github/workflows/            (GitHub requires this exact path — lives at repo root, not under qa/)
 │   └── unified-tests.yml
